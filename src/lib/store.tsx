@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { createSampleData } from "./seed";
 import type { Admission, AppData, FieldDefinition, MedicalReport, Patient } from "./types";
 import { todayISO } from "./format";
@@ -42,66 +42,62 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     if (ready) window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   }, [data, ready]);
 
-  const log = (d: AppData, action: string, detail: string): AppData["audit"] => [
-    { id: nextId(d.audit), action, detail, at: new Date().toISOString() },
-    ...d.audit,
-  ].slice(0, 40);
+  const dataRef = useRef(data);
+  dataRef.current = data;
+  const commit = useCallback((next: AppData) => {
+    dataRef.current = next;
+    setData(next);
+  }, []);
+
+  const log = (d: AppData, action: string, detail: string): AppData["audit"] =>
+    [{ id: nextId(d.audit), action, detail, at: new Date().toISOString() }, ...d.audit].slice(0, 40);
+  const nameOf = (d: AppData, id?: number) => d.patients.find((p) => p.id === id)?.fullName ?? "Patient";
 
   const addPatient = useCallback<Store["addPatient"]>((p) => {
-    let created!: Patient;
-    setData((d) => {
-      created = { ...p, id: nextId(d.patients), createdAt: new Date().toISOString() };
-      return { ...d, patients: [...d.patients, created], audit: log(d, "Patient registered", created.fullName) };
-    });
+    const d = dataRef.current;
+    const created: Patient = { ...p, id: nextId(d.patients), createdAt: new Date().toISOString() };
+    commit({ ...d, patients: [...d.patients, created], audit: log(d, "Patient registered", created.fullName) });
     return created;
-  }, []);
+  }, [commit]);
 
   const addAdmission = useCallback<Store["addAdmission"]>((a) => {
-    let created!: Admission;
-    setData((d) => {
-      created = { ...a, id: nextId(d.admissions) };
-      const name = d.patients.find((p) => p.id === a.patientId)?.fullName ?? "Patient";
-      return { ...d, admissions: [...d.admissions, created], audit: log(d, "Admitted", `${name} — ${a.reason}`) };
-    });
+    const d = dataRef.current;
+    const created: Admission = { ...a, id: nextId(d.admissions) };
+    commit({ ...d, admissions: [...d.admissions, created], audit: log(d, "Admitted", `${nameOf(d, a.patientId)} — ${a.reason}`) });
     return created;
-  }, []);
+  }, [commit]);
 
   const discharge = useCallback<Store["discharge"]>((admissionId, date) => {
-    setData((d) => {
-      const adm = d.admissions.find((a) => a.id === admissionId);
-      const name = d.patients.find((p) => p.id === adm?.patientId)?.fullName ?? "Patient";
-      return {
-        ...d,
-        admissions: d.admissions.map((a) =>
-          a.id === admissionId ? { ...a, dischargeDate: date ?? todayISO() } : a,
-        ),
-        audit: log(d, "Discharged", name),
-      };
+    const d = dataRef.current;
+    const adm = d.admissions.find((a) => a.id === admissionId);
+    commit({
+      ...d,
+      admissions: d.admissions.map((a) => (a.id === admissionId ? { ...a, dischargeDate: date ?? todayISO() } : a)),
+      audit: log(d, "Discharged", nameOf(d, adm?.patientId)),
     });
-  }, []);
+  }, [commit]);
 
   const addReport = useCallback<Store["addReport"]>((r) => {
-    let created!: MedicalReport;
-    setData((d) => {
-      created = { ...r, id: nextId(d.reports) };
-      const name = d.patients.find((p) => p.id === r.patientId)?.fullName ?? "Patient";
-      return { ...d, reports: [created, ...d.reports], audit: log(d, "Report analysed", `${name} — ${r.fileName}`) };
-    });
+    const d = dataRef.current;
+    const created: MedicalReport = { ...r, id: nextId(d.reports) };
+    commit({ ...d, reports: [created, ...d.reports], audit: log(d, "Report analysed", `${nameOf(d, r.patientId)} — ${r.fileName}`) });
     return created;
-  }, []);
+  }, [commit]);
 
   const addField = useCallback((f: FieldDefinition) => {
-    setData((d) => (d.fields.some((x) => x.key === f.key) ? d : { ...d, fields: [...d.fields, f] }));
-  }, []);
+    const d = dataRef.current;
+    if (!d.fields.some((x) => x.key === f.key)) commit({ ...d, fields: [...d.fields, f] });
+  }, [commit]);
   const removeField = useCallback((key: string) => {
-    setData((d) => ({ ...d, fields: d.fields.filter((f) => f.key !== key) }));
-  }, []);
-  const setApiKey = useCallback((k: string) => setData((d) => ({ ...d, apiKey: k })), []);
-  const resetSample = useCallback(() => setData(createSampleData()), []);
-  const clearAll = useCallback(
-    () => setData((d) => ({ patients: [], admissions: [], reports: [], audit: [], fields: d.fields, apiKey: d.apiKey })),
-    [],
-  );
+    const d = dataRef.current;
+    commit({ ...d, fields: d.fields.filter((f) => f.key !== key) });
+  }, [commit]);
+  const setApiKey = useCallback((k: string) => commit({ ...dataRef.current, apiKey: k }), [commit]);
+  const resetSample = useCallback(() => commit(createSampleData()), [commit]);
+  const clearAll = useCallback(() => {
+    const d = dataRef.current;
+    commit({ patients: [], admissions: [], reports: [], audit: [], fields: d.fields, apiKey: d.apiKey });
+  }, [commit]);
 
   const value = useMemo<Store>(
     () => ({
