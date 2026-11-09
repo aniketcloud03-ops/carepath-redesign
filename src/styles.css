@@ -138,6 +138,13 @@
     oklch(0.76 0.12 52) 48%,
     oklch(0.92 0.08 92) 100%
   );
+  /* Button-weight sunrise: stops before pale yellow so light text stays legible */
+  --gradient-sunrise-deep: linear-gradient(
+    120deg,
+    oklch(0.6 0.16 30) 0%,
+    oklch(0.67 0.15 42) 55%,
+    oklch(0.72 0.14 58) 100%
+  );
   --gradient-forest: linear-gradient(
     145deg,
     oklch(0.26 0.04 170) 0%,
@@ -211,6 +218,9 @@
 }
 @utility bg-sunrise {
   background-image: var(--gradient-sunrise);
+}
+@utility bg-sunrise-deep {
+  background-image: var(--gradient-sunrise-deep);
 }
 @utility bg-forest {
   background-image: var(--gradient-forest);

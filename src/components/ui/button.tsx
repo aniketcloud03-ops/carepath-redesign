@@ -18,7 +18,7 @@ const buttonVariants = cva(
         ghost: "text-muted-foreground hover:bg-secondary hover:text-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         sunrise:
-          "bg-sunrise text-coral-foreground shadow-coral hover:brightness-105 hover:-translate-y-0.5 [text-shadow:0_1px_1px_oklch(0.4_0.1_35/0.35)]",
+          "bg-sunrise-deep text-coral-foreground shadow-coral hover:brightness-105 hover:-translate-y-0.5 [text-shadow:0_1px_1px_oklch(0.4_0.1_35/0.35)]",
         soft: "bg-primary-soft text-primary hover:bg-accent",
         glass:
           "border border-primary-foreground/20 bg-primary-foreground/10 text-primary-foreground backdrop-blur hover:bg-primary-foreground/20",

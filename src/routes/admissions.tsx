@@ -285,7 +285,7 @@ function AdmissionsPage() {
                               <Avatar name={p?.fullName ?? "?"} id={a.patientId} />
                               <div className="min-w-0 flex-1">
                                 <div className="truncate font-semibold">{p?.fullName}</div>
-                                <div className="truncate text-sm text-muted-foreground">
+                                <div className="line-clamp-2 text-sm text-muted-foreground">
                                   {a.reason}
                                 </div>
                               </div>
