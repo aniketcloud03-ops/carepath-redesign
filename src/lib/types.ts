@@ -17,11 +17,11 @@ export interface Patient {
   address?: string | undefined;
   insurance?:
     | {
-    type: InsuranceType;
-    provider: string;
-    policyNo: string;
-    validTill?: string | undefined;
-  }
+        type: InsuranceType;
+        provider: string;
+        policyNo: string;
+        validTill?: string | undefined;
+      }
     | undefined;
   customFields: Record<string, string | number | boolean>;
   consentAt: string;

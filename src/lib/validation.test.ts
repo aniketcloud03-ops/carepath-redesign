@@ -1,11 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  daysBetween,
-  makeAadhaar,
-  maskAadhaar,
-  validateAadhaar,
-  validatePan,
-} from "./validation";
+import { daysBetween, makeAadhaar, maskAadhaar, validateAadhaar, validatePan } from "./validation";
 
 describe("Aadhaar validation", () => {
   it("accepts a 12-digit number with a correct Verhoeff check digit", () => {

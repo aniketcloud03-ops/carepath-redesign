@@ -146,8 +146,7 @@ export function createSampleData(): AppData {
         treatmentStatus: "ongoing",
         summary:
           "HbA1c and fasting glucose are well above target, confirming poorly controlled type 2 diabetes. Oral therapy adjusted.",
-        evidence:
-          "HbA1c of 8.9% indicates poor glycaemic control over the preceding three months.",
+        evidence: "HbA1c of 8.9% indicates poor glycaemic control over the preceding three months.",
         readings: [
           { name: "HbA1c", value: "8.9", unit: "%", abnormal: true },
           { name: "Fasting glucose", value: "182", unit: "mg/dL", abnormal: true },
@@ -227,10 +226,30 @@ export function createSampleData(): AppData {
       },
     ],
     audit: [
-      { id: 1, action: "Admitted", detail: "Anjali Deshmukh — Oncology biopsy work-up", at: "2026-11-06T09:30:00Z" },
-      { id: 2, action: "Report analysed", detail: "Nasir Gotam — dental_opg_xray.pdf", at: "2026-11-03T12:10:00Z" },
-      { id: 3, action: "Admitted", detail: "Nasir Gotam — Root canal & jaw infection", at: "2026-11-03T11:00:00Z" },
-      { id: 4, action: "Patient registered", detail: "Anjali Deshmukh", at: "2026-10-12T10:00:00Z" },
+      {
+        id: 1,
+        action: "Admitted",
+        detail: "Anjali Deshmukh — Oncology biopsy work-up",
+        at: "2026-11-06T09:30:00Z",
+      },
+      {
+        id: 2,
+        action: "Report analysed",
+        detail: "Nasir Gotam — dental_opg_xray.pdf",
+        at: "2026-11-03T12:10:00Z",
+      },
+      {
+        id: 3,
+        action: "Admitted",
+        detail: "Nasir Gotam — Root canal & jaw infection",
+        at: "2026-11-03T11:00:00Z",
+      },
+      {
+        id: 4,
+        action: "Patient registered",
+        detail: "Anjali Deshmukh",
+        at: "2026-10-12T10:00:00Z",
+      },
     ],
   };
 }

@@ -14,10 +14,16 @@ export interface AgentAnswer {
 export const SUGGESTIONS = [
   { title: "Prescribed medicines", q: "What pills or medications are prescribed to patients?" },
   { title: "Insurance coverage", q: "Which patients have private or government health insurance?" },
-  { title: "Ongoing treatments", q: "Show patients with ongoing treatment status and their evidence quotes" },
+  {
+    title: "Ongoing treatments",
+    q: "Show patients with ongoing treatment status and their evidence quotes",
+  },
   { title: "Length of stay", q: "Show patient stay duration in days and admission status" },
   { title: "Admission reasons", q: "What were the reasons for hospital admissions?" },
-  { title: "Monthly summary", q: "Show aggregated monthly statistics (total admitted patients, average stay duration)" },
+  {
+    title: "Monthly summary",
+    q: "Show aggregated monthly statistics (total admitted patients, average stay duration)",
+  },
 ];
 
 export async function askAgent(question: string, d: AppData): Promise<AgentAnswer> {
@@ -26,7 +32,9 @@ export async function askAgent(question: string, d: AppData): Promise<AgentAnswe
   const name = (id: number) => d.patients.find((p) => p.id === id)?.fullName ?? "—";
 
   if (/(pill|medic|drug|prescri)/.test(q)) {
-    const rows = d.reports.flatMap((r) => r.medications.map((m) => [name(r.patientId), r.condition, m.name, m.dosage]));
+    const rows = d.reports.flatMap((r) =>
+      r.medications.map((m) => [name(r.patientId), r.condition, m.name, m.dosage]),
+    );
     return {
       sql: `SELECT p.full_name, mh.condition_name, m.medicine_name, m.dosage\nFROM medications m\nJOIN medical_history mh ON mh.id = m.medical_history_id\nJOIN patients p ON p.id = mh.patient_id\nORDER BY p.full_name;`,
       columns: ["Patient", "Condition", "Medicine", "Dosage"],
@@ -35,7 +43,12 @@ export async function askAgent(question: string, d: AppData): Promise<AgentAnswe
     };
   }
   if (/(insur|policy|cover)/.test(q)) {
-    const rows = d.patients.map((p) => [p.fullName, p.insurance?.type ?? "Self pay", p.insurance?.provider ?? "—", fmtDate(p.insurance?.validTill)]);
+    const rows = d.patients.map((p) => [
+      p.fullName,
+      p.insurance?.type ?? "Self pay",
+      p.insurance?.provider ?? "—",
+      fmtDate(p.insurance?.validTill),
+    ]);
     const insured = d.patients.filter((p) => p.insurance).length;
     return {
       sql: `SELECT full_name, COALESCE(insurance_type,'Self pay'), insurance_provider, insurance_valid_till\nFROM patients\nORDER BY insurance_type;`,
@@ -62,7 +75,15 @@ export async function askAgent(question: string, d: AppData): Promise<AgentAnswe
       if (a.dischargeDate) e.days.push(stayDays(a.admissionDate, a.dischargeDate));
       byMonth.set(k, e);
     });
-    const rows = [...byMonth.entries()].sort().map(([k, v]) => [fmtDate(k + "-01", "MMM yyyy"), v.n, v.days.length ? (v.days.reduce((a, b) => a + b, 0) / v.days.length).toFixed(1) : "In progress"]);
+    const rows = [...byMonth.entries()]
+      .sort()
+      .map(([k, v]) => [
+        fmtDate(k + "-01", "MMM yyyy"),
+        v.n,
+        v.days.length
+          ? (v.days.reduce((a, b) => a + b, 0) / v.days.length).toFixed(1)
+          : "In progress",
+      ]);
     return {
       sql: `SELECT strftime('%Y-%m', admission_date) AS month, COUNT(*), ROUND(AVG(days_stayed),1)\nFROM admissions GROUP BY month ORDER BY month;`,
       columns: ["Month", "Admissions", "Avg. stay (days)"],
@@ -74,17 +95,29 @@ export async function askAgent(question: string, d: AppData): Promise<AgentAnswe
     return {
       sql: `SELECT p.full_name, a.reason, a.admission_date FROM admissions a\nJOIN patients p ON p.id = a.patient_id ORDER BY a.admission_date DESC;`,
       columns: ["Patient", "Reason", "Admitted on"],
-      rows: [...d.admissions].reverse().map((a) => [name(a.patientId), a.reason, fmtDate(a.admissionDate)]),
+      rows: [...d.admissions]
+        .reverse()
+        .map((a) => [name(a.patientId), a.reason, fmtDate(a.admissionDate)]),
       explanation: `There are ${d.admissions.length} admissions on record, covering diabetes, infections, eye and dental procedures.`,
     };
   }
   if (/(stay|days|duration|how long)/.test(q)) {
-    const match = d.patients.find((p) => q.includes(p.fullName.toLowerCase()) || q.includes((p.fullName.split(" ")[0] ?? "").toLowerCase()));
+    const match = d.patients.find(
+      (p) =>
+        q.includes(p.fullName.toLowerCase()) ||
+        q.includes((p.fullName.split(" ")[0] ?? "").toLowerCase()),
+    );
     const list = d.admissions.filter((a) => !match || a.patientId === match.id);
     return {
       sql: `SELECT p.full_name, a.admission_date, a.discharge_date, a.days_stayed, a.status\nFROM admissions a JOIN patients p ON p.id = a.patient_id${match ? `\nWHERE p.full_name = '${match.fullName}'` : ""};`,
       columns: ["Patient", "Admitted", "Discharged", "Days", "Status"],
-      rows: list.map((a) => [name(a.patientId), fmtDate(a.admissionDate), fmtDate(a.dischargeDate), stayDays(a.admissionDate, a.dischargeDate), a.dischargeDate ? "Discharged" : "Admitted"]),
+      rows: list.map((a) => [
+        name(a.patientId),
+        fmtDate(a.admissionDate),
+        fmtDate(a.dischargeDate),
+        stayDays(a.admissionDate, a.dischargeDate),
+        a.dischargeDate ? "Discharged" : "Admitted",
+      ]),
       explanation: match
         ? `${match.fullName} stayed ${list.map((a) => stayDays(a.admissionDate, a.dischargeDate)).join(" and ")} days in hospital.`
         : `Showing stay duration for all ${list.length} admissions. ${list.filter((a) => !a.dischargeDate).length} patients are still admitted.`,
@@ -94,7 +127,12 @@ export async function askAgent(question: string, d: AppData): Promise<AgentAnswe
     return {
       sql: `SELECT p.full_name, mh.condition_name, mh.severity_stage, mh.condition_keywords\nFROM medical_history mh JOIN patients p ON p.id = mh.patient_id WHERE mh.is_active = 1;`,
       columns: ["Patient", "Condition", "Severity", "Keywords"],
-      rows: d.reports.map((r) => [name(r.patientId), r.condition, r.severity, r.keywords.join(", ")]),
+      rows: d.reports.map((r) => [
+        name(r.patientId),
+        r.condition,
+        r.severity,
+        r.keywords.join(", "),
+      ]),
       explanation: `${d.reports.length} active conditions found; ${d.reports.filter((r) => r.severity === "Severe").length} are marked severe.`,
     };
   }

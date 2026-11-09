@@ -8,7 +8,12 @@ export const NAV = [
   {
     group: "Patient care",
     items: [
-      { to: "/patients/new", label: "Register patient", hint: "Scan Aadhaar or PAN", icon: UserPlus },
+      {
+        to: "/patients/new",
+        label: "Register patient",
+        hint: "Scan Aadhaar or PAN",
+        icon: UserPlus,
+      },
       { to: "/patients", label: "Patients", hint: "Search all records", icon: Users },
       { to: "/admissions", label: "Admissions", hint: "Admit & discharge", icon: Bed },
     ],

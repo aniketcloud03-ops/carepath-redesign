@@ -84,10 +84,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "MediPulse — Patient Data Management" },
-      { name: "description", content: "Register patients from Aadhaar or PAN, track hospital stays, summarise medical reports and ask questions in plain English." },
+      {
+        name: "description",
+        content:
+          "Register patients from Aadhaar or PAN, track hospital stays, summarise medical reports and ask questions in plain English.",
+      },
       { name: "author", content: "MediPulse" },
       { property: "og:title", content: "MediPulse — Patient Data Management" },
-      { property: "og:description", content: "Patient registration, admissions, AI report summaries and plain-English queries." },
+      {
+        property: "og:description",
+        content: "Patient registration, admissions, AI report summaries and plain-English queries.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },

@@ -33,7 +33,9 @@ function SidebarBody({ onNavigate }: { onNavigate?: () => void }) {
       <nav className="flex-1 space-y-6 overflow-y-auto px-3">
         {NAV.map((g, gi) => (
           <div key={g.group}>
-            <div className="px-3 pb-2 text-[11px] font-bold uppercase tracking-[0.14em] text-sidebar-muted/80">{g.group}</div>
+            <div className="px-3 pb-2 text-[11px] font-bold uppercase tracking-[0.14em] text-sidebar-muted/80">
+              {g.group}
+            </div>
             <ul className="space-y-1">
               {g.items.map((item, i) => {
                 const active = isActive(path, item.to);
@@ -49,7 +51,9 @@ function SidebarBody({ onNavigate }: { onNavigate?: () => void }) {
                       onClick={onNavigate}
                       className={cn(
                         "group relative flex items-center gap-3 rounded-2xl px-3 py-2.5 transition-colors",
-                        active ? "text-sidebar-primary-foreground" : "text-sidebar-foreground/85 hover:bg-sidebar-accent",
+                        active
+                          ? "text-sidebar-primary-foreground"
+                          : "text-sidebar-foreground/85 hover:bg-sidebar-accent",
                       )}
                     >
                       {active && (
@@ -62,14 +66,23 @@ function SidebarBody({ onNavigate }: { onNavigate?: () => void }) {
                       <span
                         className={cn(
                           "relative grid size-9 shrink-0 place-items-center rounded-xl transition-colors",
-                          active ? "bg-sidebar-primary-foreground/10" : "bg-sidebar-accent group-hover:bg-sidebar-border",
+                          active
+                            ? "bg-sidebar-primary-foreground/10"
+                            : "bg-sidebar-accent group-hover:bg-sidebar-border",
                         )}
                       >
                         <item.icon weight="fill" className="size-[18px]" />
                       </span>
                       <span className="relative min-w-0">
-                        <span className="block text-sm font-semibold leading-tight">{item.label}</span>
-                        <span className={cn("block truncate text-xs", active ? "text-sidebar-primary-foreground/70" : "text-sidebar-muted")}>
+                        <span className="block text-sm font-semibold leading-tight">
+                          {item.label}
+                        </span>
+                        <span
+                          className={cn(
+                            "block truncate text-xs",
+                            active ? "text-sidebar-primary-foreground/70" : "text-sidebar-muted",
+                          )}
+                        >
                           {item.hint}
                         </span>
                       </span>
@@ -135,7 +148,11 @@ export function AppShell({ children }: { children: ReactNode }) {
               exit={{ x: "-100%" }}
               transition={{ type: "spring", stiffness: 320, damping: 34 }}
             >
-              <button aria-label="Close menu" onClick={() => setMobileOpen(false)} className="absolute right-3 top-6 grid size-9 place-items-center rounded-xl bg-sidebar-accent">
+              <button
+                aria-label="Close menu"
+                onClick={() => setMobileOpen(false)}
+                className="absolute right-3 top-6 grid size-9 place-items-center rounded-xl bg-sidebar-accent"
+              >
                 <X weight="bold" className="size-4" />
               </button>
               <SidebarBody onNavigate={() => setMobileOpen(false)} />
@@ -147,7 +164,13 @@ export function AppShell({ children }: { children: ReactNode }) {
       {/* Top bar */}
       <header className="sticky top-0 z-30 border-b border-border/70 bg-background/80 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-[1400px] items-center gap-3 px-4 sm:px-8">
-          <Button variant="outline" size="icon" className="lg:hidden" aria-label="Open menu" onClick={() => setMobileOpen(true)}>
+          <Button
+            variant="outline"
+            size="icon"
+            className="lg:hidden"
+            aria-label="Open menu"
+            onClick={() => setMobileOpen(true)}
+          >
             <List weight="bold" />
           </Button>
           <div className="flex min-w-0 items-center gap-2 lg:hidden">
@@ -155,15 +178,23 @@ export function AppShell({ children }: { children: ReactNode }) {
             <span className="font-display font-semibold">MediPulse</span>
           </div>
           <div className="hidden text-sm text-muted-foreground lg:block">
-            {new Date().toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
+            {new Date().toLocaleDateString("en-IN", {
+              weekday: "long",
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
           </div>
           <div className="ml-auto flex items-center gap-2">
             <HelpDialog>
               <Button variant="ghost" size="sm" className="h-10 gap-2 rounded-xl px-3">
-                <Question weight="fill" className="text-coral" /> <span className="hidden sm:inline">How it works</span>
+                <Question weight="fill" className="text-coral" />{" "}
+                <span className="hidden sm:inline">How it works</span>
               </Button>
             </HelpDialog>
-            <div className="grid size-10 place-items-center rounded-full bg-primary-soft font-display text-sm font-semibold text-primary">DR</div>
+            <div className="grid size-10 place-items-center rounded-full bg-primary-soft font-display text-sm font-semibold text-primary">
+              DR
+            </div>
           </div>
         </div>
       </header>
