@@ -121,9 +121,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
+        <script
+          // Skip the intro splash on repeat visits within the same session, before first paint.
+          dangerouslySetInnerHTML={{
+            __html: `try{if(sessionStorage.getItem("medipulse-intro-seen"))document.documentElement.classList.add("no-splash")}catch(e){}`,
+          }}
+        />
       </head>
       <body>
         {children}
