@@ -297,10 +297,10 @@ function AdmissionsPage() {
                               <div>
                                 <div className="flex items-baseline gap-1">
                                   <span className="font-display text-4xl font-semibold text-coral">
-                                    {days + 1}
+                                    {days}
                                   </span>
                                   <span className="text-sm font-semibold text-muted-foreground">
-                                    {days + 1 === 1 ? "day" : "days"}
+                                    {days === 1 ? "day so far" : "days so far"}
                                   </span>
                                 </div>
                                 <div className="flex items-center gap-1 text-xs text-muted-foreground">

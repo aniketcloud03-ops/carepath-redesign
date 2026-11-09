@@ -70,7 +70,7 @@ export function PatientSheet({
                 <div className="flex flex-wrap gap-2 pt-4">
                   {current ? (
                     <Chip tone="coral" dot>
-                      Admitted · day {stayDays(current.admissionDate) + 1}
+                      Admitted · {stayDays(current.admissionDate)} days so far
                     </Chip>
                   ) : (
                     <Chip className="bg-primary-foreground/15 text-primary-foreground">

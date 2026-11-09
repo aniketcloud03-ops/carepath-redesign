@@ -391,7 +391,7 @@ function Overview() {
                     </div>
                     <div className="text-right">
                       <Chip tone="coral" dot>
-                        Day {stayDays(a.admissionDate) + 1}
+                        {stayDays(a.admissionDate)} days so far
                       </Chip>
                       <div className="mt-1 text-xs text-muted-foreground">
                         since {fmtDate(a.admissionDate, "d MMM")}

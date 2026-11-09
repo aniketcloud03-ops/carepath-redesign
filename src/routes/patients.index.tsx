@@ -199,7 +199,7 @@ function PatientsPage() {
                     <div className="hidden md:block">
                       {stay ? (
                         <Chip tone="coral" dot>
-                          Admitted · day {stayDays(stay.admissionDate) + 1}
+                          Admitted · {stayDays(stay.admissionDate)}d
                         </Chip>
                       ) : (
                         <Chip tone="neutral">At home</Chip>
