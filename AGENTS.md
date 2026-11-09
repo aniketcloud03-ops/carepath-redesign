@@ -28,3 +28,9 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+
+- App data lives in a client store (`src/lib/store.tsx`, persisted to localStorage) and AI features use demo stand-ins in `src/lib/mock-extract.ts` and `src/lib/ai-agent.ts`; why: the real FastAPI + Gemini backend runs outside Lovable, so these modules are the single swap point for real API calls.
+- Icons come from `@phosphor-icons/react/ssr` with `weight="fill"`; why: the design calls for filled icons and the `/ssr` entry renders safely during SSR.
+- All colors, gradients and shadows are tokens in `src/styles.css` (`bg-sunrise`, `bg-forest`, `surface`, etc.); components never use raw color classes.
