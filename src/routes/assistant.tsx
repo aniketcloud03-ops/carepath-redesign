@@ -60,7 +60,7 @@ function AssistantPage() {
             </motion.p>
             <motion.div initial="hidden" animate="show" variants={{ hidden: {}, show: { transition: { staggerChildren: 0.06, delayChildren: 0.35 } } }} className="mt-10 grid w-full gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {SUGGESTIONS.map((s, i) => {
-                const I = ICONS[i];
+                const I = ICONS[i] ?? Robot;
                 return (
                   <motion.button key={s.q} variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0 } }} onClick={() => ask(s.q)} className="surface surface-lift group flex flex-col items-start gap-3 p-4 text-left">
                     <span className="grid size-10 place-items-center rounded-xl bg-primary-soft text-primary transition-colors group-hover:bg-sunrise group-hover:text-coral-foreground"><I weight="fill" className="size-5" /></span>

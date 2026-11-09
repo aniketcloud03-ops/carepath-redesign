@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { initials } from "@/lib/format";
 import type { Severity, TreatmentStatus } from "@/lib/types";
 
-export function AnimatedNumber({ value, decimals = 0, className }: { value: number; decimals?: number; className?: string }) {
+export function AnimatedNumber({ value, decimals = 0, className }: { value: number; decimals?: number | undefined; className?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true });
   useEffect(() => {

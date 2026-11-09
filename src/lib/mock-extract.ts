@@ -13,10 +13,10 @@ const PEOPLE = [
 
 export async function extractIdentity(docType: "aadhaar" | "pan") {
   await wait(2600);
-  const p = PEOPLE[Math.floor(Math.random() * PEOPLE.length)];
+  const p = PEOPLE[Math.floor(Math.random() * PEOPLE.length)] ?? PEOPLE[0];
   const base = String(2 + Math.floor(Math.random() * 7)) + String(Math.floor(Math.random() * 1e10)).padStart(10, "0");
   const age = new Date().getFullYear() - Number(p.dob.slice(0, 4));
-  const panLetter = p.fullName.split(" ")[1][0];
+  const panLetter = p.fullName.split(" ")[1]?.[0] ?? "X";
   return {
     fullName: p.fullName,
     gender: p.gender as Patient["gender"],

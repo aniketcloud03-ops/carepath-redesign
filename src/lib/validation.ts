@@ -28,14 +28,14 @@ export const digitsOnly = (s: string) => s.replace(/\D/g, "");
 export function verhoeffCheckDigit(base: string): number {
   let c = 0;
   const digits = digitsOnly(base).split("").reverse().map(Number);
-  for (let i = 0; i < digits.length; i++) c = D[c][P[(i + 1) % 8][digits[i]]];
-  return INV[c];
+  for (let i = 0; i < digits.length; i++) c = D[c]![P[(i + 1) % 8]![digits[i]!]!]!;
+  return INV[c]!;
 }
 
 export function isValidVerhoeff(num: string): boolean {
   const digits = digitsOnly(num).split("").reverse().map(Number);
   let c = 0;
-  for (let i = 0; i < digits.length; i++) c = D[c][P[i % 8][digits[i]]];
+  for (let i = 0; i < digits.length; i++) c = D[c]![P[i % 8]![digits[i]!]!]!;
   return c === 0;
 }
 

@@ -79,7 +79,7 @@ export async function askAgent(question: string, d: AppData): Promise<AgentAnswe
     };
   }
   if (/(stay|days|duration|how long)/.test(q)) {
-    const match = d.patients.find((p) => q.includes(p.fullName.toLowerCase()) || q.includes(p.fullName.split(" ")[0].toLowerCase()));
+    const match = d.patients.find((p) => q.includes(p.fullName.toLowerCase()) || q.includes((p.fullName.split(" ")[0] ?? "").toLowerCase()));
     const list = d.admissions.filter((a) => !match || a.patientId === match.id);
     return {
       sql: `SELECT p.full_name, a.admission_date, a.discharge_date, a.days_stayed, a.status\nFROM admissions a JOIN patients p ON p.id = a.patient_id${match ? `\nWHERE p.full_name = '${match.fullName}'` : ""};`,

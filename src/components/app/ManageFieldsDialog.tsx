@@ -25,8 +25,8 @@ export function ManageFieldsDialog({ children }: { children: ReactNode }) {
 
   const add = () => {
     const key = label.trim().toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
-    if (!key) return toast.error("Give the field a name");
-    if (fields.some((f) => f.key === key)) return toast.error("A field with that name already exists");
+    if (!key) { toast.error("Give the field a name"); return; }
+    if (fields.some((f) => f.key === key)) { toast.error("A field with that name already exists"); return; }
     addField({ key, label: label.trim(), type, options: type === "select" ? options.split(",").map((o) => o.trim()).filter(Boolean) : undefined });
     toast.success(`“${label.trim()}” added to the registration form`);
     setLabel("");

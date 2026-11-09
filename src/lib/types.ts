@@ -8,18 +8,18 @@ export type FieldType = "text" | "number" | "date" | "select" | "boolean";
 export interface Patient {
   id: number;
   fullName: string;
-  aadhaar?: string;
-  pan?: string;
-  dob?: string;
-  age?: number;
+  aadhaar?: string | undefined;
+  pan?: string | undefined;
+  dob?: string | undefined;
+  age?: number | undefined;
   gender: Gender;
-  mobile?: string;
-  address?: string;
+  mobile?: string | undefined;
+  address?: string | undefined;
   insurance?: {
-    type: InsuranceType;
+    type: InsuranceType | undefined;
     provider: string;
     policyNo: string;
-    validTill?: string;
+    validTill?: string | undefined;
   };
   customFields: Record<string, string | number | boolean>;
   consentAt: string;
@@ -30,14 +30,14 @@ export interface Admission {
   id: number;
   patientId: number;
   admissionDate: string;
-  dischargeDate?: string;
+  dischargeDate?: string | undefined;
   reason: string;
 }
 
 export interface LabReading {
   name: string;
   value: string;
-  unit?: string;
+  unit?: string | undefined;
   abnormal: boolean;
 }
 
@@ -67,8 +67,8 @@ export interface FieldDefinition {
   key: string;
   label: string;
   type: FieldType;
-  options?: string[];
-  required?: boolean;
+  options?: string[] | undefined;
+  required?: boolean | undefined;
 }
 
 export interface AuditEntry {
@@ -84,5 +84,5 @@ export interface AppData {
   reports: MedicalReport[];
   fields: FieldDefinition[];
   audit: AuditEntry[];
-  apiKey?: string;
+  apiKey?: string | undefined;
 }
