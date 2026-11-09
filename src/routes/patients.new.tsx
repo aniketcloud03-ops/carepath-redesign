@@ -185,7 +185,7 @@ function RegisterPage() {
         <section className="surface overflow-hidden">
           <div className="border-b px-6 py-5 sm:px-8">
             <div className="eyebrow text-coral">Step {step + 1}</div>
-            <h2 className="mt-1 text-xl font-semibold">{STEPS[step].title}</h2>
+            <h2 className="mt-1 text-xl font-semibold">{STEPS[step]?.title}</h2>
           </div>
 
           <div className="relative min-h-[460px] overflow-hidden px-6 py-6 sm:px-8">
