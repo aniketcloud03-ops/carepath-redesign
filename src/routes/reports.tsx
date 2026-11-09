@@ -42,7 +42,7 @@ export const Route = createFileRoute("/reports")({
   component: ReportsPage,
 });
 
-export const DEPT: Record<Department, { icon: ComponentType<IconProps>; tone: string }> = {
+const DEPT: Record<Department, { icon: ComponentType<IconProps>; tone: string }> = {
   "Eye Care": { icon: Eye, tone: "bg-meadow text-primary-foreground" },
   Dental: { icon: Tooth, tone: "bg-amber-glow text-foreground" },
   "Blood Sugar": { icon: Drop, tone: "bg-sunrise text-coral-foreground" },
