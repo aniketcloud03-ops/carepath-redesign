@@ -15,12 +15,14 @@ export interface Patient {
   gender: Gender;
   mobile?: string | undefined;
   address?: string | undefined;
-  insurance?: {
-    type: InsuranceType | undefined;
+  insurance?:
+    | {
+    type: InsuranceType;
     provider: string;
     policyNo: string;
     validTill?: string | undefined;
-  };
+  }
+    | undefined;
   customFields: Record<string, string | number | boolean>;
   consentAt: string;
   createdAt: string;

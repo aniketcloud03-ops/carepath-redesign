@@ -102,7 +102,7 @@ function PatientsPage() {
                       <Avatar name={p.fullName} id={p.id} />
                       <div className="min-w-0">
                         <div className="truncate font-semibold">{p.fullName}</div>
-                        <div className="truncate text-sm text-muted-foreground">#{p.id} · {p.age ?? "—"} yrs · {p.gender}{p.customFields.blood_group ? ` · ${p.customFields.blood_group}` : ""}</div>
+                        <div className="truncate text-sm text-muted-foreground">#{p.id} · {p.age ?? "—"} yrs · {p.gender}{p.customFields["blood_group"] ? ` · ${p.customFields["blood_group"]}` : ""}</div>
                       </div>
                     </div>
                     <div className="hidden min-w-0 md:block">

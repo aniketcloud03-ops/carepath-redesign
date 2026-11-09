@@ -365,7 +365,7 @@ function RegisterPage() {
   );
 }
 
-function Field({ label, children, required, hint, status, className }: { label: string; children: ReactNode; required?: boolean; hint?: string; status?: { valid: boolean; message: string }; className?: string }) {
+function Field({ label, children, required, hint, status, className }: { label: string; children: ReactNode; required?: boolean; hint?: string | undefined; status?: { valid: boolean; message: string }; className?: string }) {
   return (
     <div className={cn("space-y-2", className)}>
       <Label className="text-sm font-semibold">{label}{required && <span className="text-coral"> *</span>}</Label>

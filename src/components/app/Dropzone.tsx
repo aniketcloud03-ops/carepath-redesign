@@ -15,13 +15,13 @@ export function Dropzone({
   children,
 }: {
   onFile: (f: File) => void;
-  busy?: boolean;
-  done?: boolean;
+  busy?: boolean | undefined;
+  done?: boolean | undefined;
   title: string;
   hint: string;
   busyLabel?: ReactNode;
   accept?: string;
-  fileName?: string;
+  fileName?: string | undefined;
   children?: ReactNode;
 }) {
   const input = useRef<HTMLInputElement>(null);
