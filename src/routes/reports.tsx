@@ -244,8 +244,8 @@ function ReportsPage() {
       </motion.section>
 
       {/* Filters */}
-      <div className="mb-5 flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
-        <h2 className="text-xl font-semibold">
+      <div className="mb-5 flex flex-col gap-4">
+        <h2 className="whitespace-nowrap text-xl font-semibold">
           Report history <span className="text-muted-foreground">· {list.length}</span>
         </h2>
         <div className="flex flex-col gap-3 md:flex-row md:items-center">
